@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import { home } from '../content/site';
+import Intro from '../components/home/Intro.astro';
+import Hero from '../components/home/Hero.astro';
+import Arrival from '../components/home/Arrival.astro';
+import Story from '../components/home/Story.astro';
+import Vista from '../components/home/Vista.astro';
+import Dusk from '../components/home/Dusk.astro';
+import Rooms from '../components/home/Rooms.astro';
+import Day from '../components/home/Day.astro';
+import Around from '../components/home/Around.astro';
+import Table from '../components/home/Table.astro';
+import GettingHere from '../components/home/GettingHere.astro';
+---
+<Base description={home.meta.description}>
+  <Intro />
+  <Hero />
+  <Arrival />
+  <Story />
+  <Vista />
+  <Rooms />
+  <Day />
+  <Around />
+  <Table />
+  <Dusk />
+  <GettingHere />
+</Base>

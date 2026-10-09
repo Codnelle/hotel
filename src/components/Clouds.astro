@@ -1,0 +1,42 @@
+---
+/**
+ * Signature element: soft cloud layers that drift horizontally at different
+ * parallax speeds. Each layer has an ambient CSS drift (inner img) and a
+ * scroll-linked drift driven by GSAP via data-speed (outer div).
+ */
+interface Props { variant?: 'a' | 'b' | 'c' | 'hero'; class?: string; eager?: boolean }
+const { variant = 'a', class: cls = '', eager = false } = Astro.props;
+// 'hero' clouds travel all the way across the frame on a loop instead of swaying in place.
+const pass = variant === 'hero';
+
+type Layer = { src: string; style: string; speed: number; dur: number; delay: number; opacity: number };
+const sets: Record<string, Layer[]> = {
+  hero: [
+    { src: '/clouds/cloud-1.svg', style: 'left:0;top:6%;width:120vw', speed: -10, dur: 70, delay: -12, opacity: 0.95 },
+    { src: '/clouds/cloud-2.svg', style: 'left:0;top:30%;width:85vw', speed: 16, dur: 48, delay: -30, opacity: 0.85 },
+    { src: '/clouds/cloud-3.svg', style: 'left:0;top:52%;width:60vw', speed: -22, dur: 36, delay: -5, opacity: 0.75 },
+    { src: '/clouds/cloud-1.svg', style: 'left:0;top:62%;width:100vw', speed: 12, dur: 90, delay: -60, opacity: 0.9 },
+  ],
+  a: [
+    { src: '/clouds/cloud-1.svg', style: 'left:-20vw;top:0;width:110vw', speed: -14, dur: 80, delay: 0, opacity: 0.9 },
+    { src: '/clouds/cloud-2.svg', style: 'right:-25vw;top:30%;width:80vw', speed: 22, dur: 64, delay: -20, opacity: 0.75 },
+    { src: '/clouds/cloud-3.svg', style: 'left:10vw;top:55%;width:55vw', speed: -30, dur: 52, delay: -35, opacity: 0.6 },
+  ],
+  b: [
+    { src: '/clouds/cloud-2.svg', style: 'left:-30vw;top:10%;width:90vw', speed: 18, dur: 72, delay: -10, opacity: 0.8 },
+    { src: '/clouds/cloud-3.svg', style: 'right:-15vw;top:40%;width:60vw', speed: -26, dur: 58, delay: -30, opacity: 0.65 },
+  ],
+  c: [
+    { src: '/clouds/cloud-3.svg', style: 'left:-10vw;top:0;width:70vw', speed: -20, dur: 66, delay: -5, opacity: 0.7 },
+    { src: '/clouds/cloud-1.svg', style: 'right:-35vw;top:35%;width:100vw', speed: 14, dur: 88, delay: -40, opacity: 0.8 },
+  ],
+};
+const layers = sets[variant];
+---
+<div class:list={['clouds', pass && 'clouds--pass', cls]} aria-hidden="true">
+  {layers.map((l) => (
+    <div class="cloud" style={`${l.style};opacity:${l.opacity}`} data-cloud data-speed={l.speed}>
+      <img src={l.src} alt="" width="1600" height="420" loading={eager ? 'eager' : 'lazy'} decoding="async" style={`--drift-dur:${l.dur}s;--drift-delay:${l.delay}s`} />
+    </div>
+  ))}
+</div>

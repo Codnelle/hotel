@@ -1,0 +1,6 @@
+---
+import { ui } from '../content/site';
+interface Props { class?: string; label?: string }
+const { class: cls = '', label = ui.stay } = Astro.props;
+---
+<button type="button" class:list={['btn btn-book', cls]} data-open-booking aria-haspopup="dialog" aria-controls="booking">{label}</button>

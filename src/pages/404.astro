@@ -1,0 +1,8 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+---
+<Base title="Not found" description="This page is lost in the cloud.">
+  <PageIntro label="404" headline={['Lost in the *cloud.*']} intro="The page you were looking for isn’t here. The house still is." />
+  <div class="wrap pb-[var(--section-y)] md:pl-[calc(var(--gutter)+42%)]"><a href="/" class="link text-sm">Back to the house</a></div>
+</Base>

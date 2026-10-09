@@ -1,0 +1,16 @@
+---
+import Headline from './Headline.astro';
+interface Props { label: string; headline: string[]; intro?: string }
+const { label, headline, intro } = Astro.props;
+---
+<section class="relative flex min-h-[78svh] flex-col justify-end pt-[calc(var(--header-h)+6rem)] pb-[var(--section-y)]" aria-labelledby="page-title">
+  <div class="wrap relative z-[3] w-full">
+    <div class="md:pl-[8vw]">
+      <p class="label mb-6" data-reveal="fade">{label}</p>
+      <Headline lines={headline} as="h1" id="page-title" class="display-xl max-w-[14ch]" />
+    </div>
+    {intro && (
+      <p class="mt-14 max-w-[34ch] text-[1.0625rem] text-ink/85 md:mt-20 md:ml-[42%] md:max-w-[40ch]" data-reveal="fade">{intro}</p>
+    )}
+  </div>
+</section>

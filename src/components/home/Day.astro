@@ -1,0 +1,33 @@
+---
+/** A day here: three hours, set large, beside one picture of the walk to Durpin. */
+import { home } from '../../content/site';
+import Headline from '../Headline.astro';
+import Photo from '../Photo.astro';
+const { day } = home;
+---
+<section class="section" aria-labelledby="day-title">
+  <div class="wrap grid gap-16 md:grid-cols-12 md:gap-0">
+    <div class="md:col-span-6 md:col-start-2">
+      <p class="label mb-6" data-reveal="fade">{day.label}</p>
+      <Headline lines={day.headline} id="day-title" />
+      <ol class="mt-16 md:mt-24" data-reveal="stagger">
+        {day.moments.map((m) => (
+          <li class="grid grid-cols-[6.5rem_1fr] items-baseline gap-x-6 border-t border-teesta/50 py-8 md:grid-cols-[11rem_1fr] md:py-10">
+            <p class="font-display text-[2rem] leading-none italic md:text-[3.2rem]">
+              {m.hour}
+              <span class="label mt-3 block not-italic">{m.time}</span>
+            </p>
+            <p class="font-display text-[1.6rem] leading-[1.25] md:text-[2.1rem]">{m.text}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="mt-12" data-reveal="fade">
+        <a href="/a-day-here" class="link text-sm">A day here</a>
+      </div>
+    </div>
+    <div class="md:col-span-3 md:col-start-9 md:pt-[22vh]" data-drift="0.8">
+      <Photo img={day.image} class="aspect-[4/5]" sizes="(min-width: 768px) 25vw, 100vw" width={1100} height={1375} />
+      <p class="label mt-4">12 p.m. · Durpin</p>
+    </div>
+  </div>
+</section>

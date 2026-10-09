@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Photo from '../components/Photo.astro';
+import { tablePage } from '../content/site';
+const [a, b, c] = tablePage.images;
+---
+<Base title={tablePage.meta.title} description={tablePage.meta.description}>
+  <PageIntro label={tablePage.label} headline={tablePage.headline} />
+
+  <section class="pb-[var(--section-y)]" aria-label="Breakfast">
+    <div class="wrap">
+      <div class="md:w-[62%]">
+        <Photo img={a} class="aspect-[4/5] md:aspect-[3/2]" sizes="(min-width: 768px) 62vw, 100vw" eager />
+      </div>
+      <p class="lede mt-14 max-w-[24ch] md:mt-20 md:ml-[50%] md:max-w-[30rem]" data-reveal="fade">{tablePage.line}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-label="From the market">
+    <div class="wrap grid items-center gap-12 md:grid-cols-12 md:gap-0">
+      <div class="md:col-span-4 md:col-start-2">
+        <p class="max-w-[34ch] text-ink/85" data-reveal="fade">{tablePage.body[0]}</p>
+      </div>
+      <div class="md:col-span-5 md:col-start-8">
+        <Photo img={b} class="aspect-[4/5]" sizes="(min-width: 768px) 42vw, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Dinner">
+    <div class="wrap grid items-center gap-12 md:grid-cols-12 md:gap-0">
+      <div class="md:col-span-5 md:col-start-2">
+        <Photo img={c} class="aspect-[3/4]" sizes="(min-width: 768px) 42vw, 100vw" />
+      </div>
+      <div class="md:col-span-4 md:col-start-8">
+        <p class="max-w-[34ch] text-ink/85" data-reveal="fade">{tablePage.body[1]}</p>
+      </div>
+    </div>
+  </section>
+</Base>

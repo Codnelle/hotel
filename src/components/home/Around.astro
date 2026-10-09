@@ -1,0 +1,20 @@
+---
+import { home } from '../../content/site';
+import Headline from '../Headline.astro';
+import PlaceList from '../PlaceList.astro';
+const { around } = home;
+---
+<section class="section relative" aria-labelledby="around-title">
+  <div class="wrap relative">
+    <div class="md:pl-[8vw]">
+      <p class="label mb-6" data-reveal="fade">{around.label}</p>
+      <Headline lines={around.headline} id="around-title" />
+    </div>
+    <div class="mt-16 md:mt-24 md:pl-[8vw]">
+      <PlaceList />
+    </div>
+    <div class="mt-14 md:pl-[8vw]" data-reveal="fade">
+      <a href="/kalimpong" class="link text-sm">More of Kalimpong</a>
+    </div>
+  </div>
+</section>

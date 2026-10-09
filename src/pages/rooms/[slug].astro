@@ -1,0 +1,66 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Photo from '../../components/Photo.astro';
+import RoomFacts from '../../components/RoomFacts.astro';
+import BookButton from '../../components/BookButton.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import { rooms, ui, type Room } from '../../content/site';
+
+export function getStaticPaths() {
+  return rooms.map((room, i) => ({
+    params: { slug: room.slug },
+    props: { room, next: rooms[(i + 1) % rooms.length] },
+  }));
+}
+const { room, next } = Astro.props as { room: Room; next: Room };
+const [first, ...rest] = room.images;
+// Asymmetric placement for the gallery, one image per screen.
+const spots = ['md:w-[46%] md:ml-[8vw]', 'md:w-[38%] md:ml-auto md:mr-[6vw]', 'md:w-[56%] md:mx-auto', 'md:w-[40%] md:ml-[20vw]', 'md:w-[44%] md:ml-auto'];
+const ratios = ['aspect-[4/5]', 'aspect-[3/4]', 'aspect-[3/2]', 'aspect-[4/5]', 'aspect-[3/4]'];
+---
+<Base title={room.name} description={`${room.name} at [Hotel Name], Kalimpong. ${room.line}`}>
+  <PageIntro label={room.name} headline={room.headline} />
+
+  <section class="pb-[var(--section-y)]" aria-label={`${room.name}, first look`}>
+    <div class="wrap">
+      <Photo img={first} class="aspect-[4/5] md:aspect-[16/9]" sizes="100vw" eager />
+    </div>
+  </section>
+
+  <section class="section pt-0" aria-labelledby="about-room">
+    <div class="wrap grid gap-16 md:grid-cols-12">
+      <div class="md:col-span-5 md:col-start-2">
+        <h2 id="about-room" class="sr-only">About the {room.name}</h2>
+        {room.body.map((p) => <p class="lede mb-8 last:mb-0" data-reveal="fade">{p}</p>)}
+      </div>
+      <div class="md:col-span-4 md:col-start-8 md:pt-3" data-reveal="fade">
+        <RoomFacts room={room} />
+        <div class="mt-10 flex flex-wrap gap-3">
+          <BookButton label={ui.book} />
+          <WhatsAppButton label="Ask about it" message={`Hello, I would like to ask about the ${room.name}.`} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-[var(--section-y)]" aria-label={`${room.name}, photographs`}>
+    <div class="wrap space-y-24 md:space-y-[18vh]">
+      {rest.map((img, i) => (
+        <div class={spots[i % spots.length]}>
+          <Photo img={img} class={ratios[i % ratios.length]} sizes="(min-width: 768px) 50vw, 100vw" />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section border-t border-teesta/40" aria-labelledby="next-room">
+    <div class="wrap md:pl-[calc(var(--gutter)+8vw)]">
+      <p class="label mb-6">Next room</p>
+      <h2 id="next-room" class="display-lg" data-reveal="fade">
+        <a href={`/rooms/${next.slug}`} class="hover:italic">{next.name}</a>
+      </h2>
+      <p class="mt-4 text-ink/80">{ui.from} {next.from} {ui.perNight}</p>
+    </div>
+  </section>
+</Base>

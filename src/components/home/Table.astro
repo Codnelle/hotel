@@ -1,0 +1,17 @@
+---
+/** The table: one line about the kitchen, lit word by word. */
+import { home } from '../../content/site';
+const { table } = home;
+const words = table.line.split(' ');
+---
+<section class="section relative" aria-labelledby="table-label">
+  <div class="wrap">
+    <div class="md:ml-[33%]">
+      <p id="table-label" class="label mb-10" data-reveal="fade">{table.label}</p>
+      <p class="statement" data-scrub-words>
+        {words.map((w) => <span class="w">{w} </span>)}
+      </p>
+      <div class="mt-12" data-reveal="fade"><a href="/the-table" class="link text-sm">The table</a></div>
+    </div>
+  </div>
+</section>

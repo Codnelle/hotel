@@ -1,0 +1,59 @@
+---
+/**
+ * One full-screen moment: a small window of cloud opens out to fill the
+ * screen as you scroll past. Not pinned; it simply grows as it passes.
+ */
+import { home } from '../../content/site';
+import { findImage } from '../../lib/images';
+import { accent } from '../../lib/text';
+import Clouds from '../Clouds.astro';
+
+const { vista } = home;
+const src = findImage(vista.image.key);
+const small = findImage(`${vista.image.key}-1000`);
+---
+<section class="vista relative h-[100svh] md:h-[118svh]" aria-labelledby="vista-title" data-vista>
+  <div class="vista-frame absolute inset-0 overflow-hidden" data-vista-frame>
+    {src ? (
+      <img
+        src={src}
+        srcset={small ? `${small} 1000w, ${src} 2048w` : undefined}
+        sizes="100vw"
+        alt={vista.image.alt}
+        width="2048"
+        height="1360"
+        loading="lazy"
+        decoding="async"
+        class="vista-img h-full w-full object-cover"
+        data-vista-img
+      />
+    ) : (
+      <div class="ph ph-3 h-full" role="img" aria-label={vista.image.alt}></div>
+    )}
+    <div class="absolute inset-0 bg-gradient-to-t from-[rgba(20,28,25,0.55)] via-transparent to-transparent" aria-hidden="true"></div>
+    <Clouds variant="hero" class="top-[35%] h-[60%]" />
+  </div>
+
+  <div class="wrap relative z-[3] flex h-full flex-col justify-end pb-[12svh]">
+    <div class="md:pl-[8vw]" data-vista-copy>
+      <h2 id="vista-title" class="display-xl text-paper">
+        {vista.headline.map((l) => <span class="line" set:html={accent(l)} />)}
+      </h2>
+      <p class="mt-8 max-w-[32ch] text-paper/90">{vista.note}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .vista-frame {
+    clip-path: inset(0);
+  }
+  :global(.js) .vista-frame {
+    clip-path: inset(var(--vy, 12%) var(--vx, 20%) round 2px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .vista-frame {
+      clip-path: inset(0);
+    }
+  }
+</style>

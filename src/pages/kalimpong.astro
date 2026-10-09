@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import PlaceList from '../components/PlaceList.astro';
+import Photo from '../components/Photo.astro';
+import { kalimpongPage } from '../content/site';
+---
+<Base title={kalimpongPage.meta.title} description={kalimpongPage.meta.description}>
+  <PageIntro label={kalimpongPage.label} headline={kalimpongPage.headline} intro={kalimpongPage.intro} />
+
+  <section class="section pt-0" aria-labelledby="ridge-heading">
+    <div class="wrap">
+      <h2 id="ridge-heading" class="label mb-10 md:pl-[8vw]">On the ridge</h2>
+      <div class="md:pl-[8vw]"><PlaceList /></div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Kalimpong from above">
+    <div class="wrap">
+      <div class="md:ml-auto md:w-[58%]">
+        <Photo img={kalimpongPage.image} class="aspect-[4/5] md:aspect-[3/2]" sizes="(min-width: 768px) 58vw, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="also-heading">
+    <div class="wrap md:pl-[calc(var(--gutter)+8vw)]">
+      <h2 id="also-heading" class="label mb-14">Also worth the walk</h2>
+      <ul class="grid gap-16 md:grid-cols-3 md:gap-[5vw]" data-reveal="stagger">
+        {kalimpongPage.more.map((p) => (
+          <li>
+            <h3 class="font-display text-[1.85rem] leading-tight">{p.name}</h3>
+            <span class="rule my-5" aria-hidden="true"></span>
+            <p class="max-w-[30ch] text-ink/85">{p.note}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,20 @@
+---
+import type { Room } from '../content/site';
+import { ui } from '../content/site';
+interface Props { room: Room; class?: string }
+const { room, class: cls = '' } = Astro.props;
+const facts = [
+  ['Size', room.size],
+  ['Bed', room.bed],
+  ['View', room.view],
+  ['From', `${room.from} ${ui.perNight}`],
+];
+---
+<dl class:list={['grid grid-cols-2 gap-x-8 gap-y-6 text-[0.95rem]', cls]}>
+  {facts.map(([k, v]) => (
+    <div>
+      <dt class="label mb-1">{k}</dt>
+      <dd>{v}</dd>
+    </div>
+  ))}
+</dl>

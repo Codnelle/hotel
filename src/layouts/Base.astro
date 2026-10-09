@@ -1,0 +1,43 @@
+---
+import '../styles/global.css';
+import { hotel, ui } from '../content/site';
+import Header from '../components/Header.astro';
+import Menu from '../components/Menu.astro';
+import BookingPanel from '../components/BookingPanel.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props { title?: string; description: string }
+const { title, description } = Astro.props;
+const fullTitle = (title ? `${title} · ${hotel.name}, Kalimpong` : `${hotel.name}, Kalimpong`).replace(/\[|\]/g, '');
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description.replace(/\[|\]/g, '')} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#EFEEE9" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <script is:inline>document.documentElement.classList.add('js');setTimeout(function(){if(!window.__motion){var d=document.documentElement;d.classList.remove('js');d.classList.remove('intro-on')}},4000);</script>
+  </head>
+  <body>
+    <a href="#main" class="sr-only z-[70] rounded-full bg-paper px-4 py-2 focus:not-sr-only focus:fixed focus:top-3 focus:left-3">{ui.skip}</a>
+    <div class="mist-veil" aria-hidden="true" data-veil></div>
+    <Header />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <Menu />
+    <BookingPanel />
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>

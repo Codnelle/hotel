@@ -1,0 +1,45 @@
+---
+/** The opening: phrases surface out of the mist, then the mist lifts on the house. */
+import { home } from '../../content/site';
+import { accent } from '../../lib/text';
+---
+<div class="intro" aria-hidden="true" data-intro>
+  {home.intro.map((p) => <p class="intro-line display-lg" set:html={accent(p)} data-intro-line />)}
+  <span class="intro-skip label">Scroll</span>
+</div>
+
+<style>
+  .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 65;
+    display: none;
+    place-items: center;
+    background:
+      radial-gradient(90% 60% at 50% 45%, var(--paper) 0%, transparent 70%),
+      var(--mist);
+  }
+  :global(html.intro-on) .intro {
+    display: grid;
+  }
+  .intro-line {
+    grid-area: 1 / 1;
+    opacity: 0;
+    text-align: center;
+    padding-inline: var(--gutter);
+  }
+  .intro-skip {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.6;
+  }
+</style>
+<script is:inline>
+  // Decide before the hero paints: play the opening once per visit, never with reduced motion.
+  try {
+    if (!sessionStorage.getItem('intro-seen') && !matchMedia('(prefers-reduced-motion: reduce)').matches)
+      document.documentElement.classList.add('intro-on');
+  } catch (e) {}
+</script>

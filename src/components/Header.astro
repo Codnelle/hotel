@@ -1,0 +1,58 @@
+---
+import { hotel, ui } from '../content/site';
+import RidgeMark from './RidgeMark.astro';
+import BookButton from './BookButton.astro';
+---
+<header class="site-header fixed inset-x-0 top-0 z-40" data-header>
+  <div class="wrap flex h-[var(--header-h)] items-center justify-between gap-6">
+    <a href="/" class="flex items-center gap-3 py-2" aria-label={`${hotel.name}, home`}>
+      <RidgeMark class="h-auto w-9 text-ink" />
+      <span class="text-[0.6875rem] font-medium tracking-[0.26em] uppercase">{hotel.name}</span>
+    </a>
+    <div class="flex items-center gap-5">
+      <BookButton class="hidden md:inline-flex !min-h-10 !px-5" />
+      <button
+        type="button"
+        class="group -mr-2 flex h-11 items-center gap-3 px-2"
+        data-open-menu
+        aria-haspopup="dialog"
+        aria-controls="menu"
+        aria-expanded="false"
+      >
+        <span class="label !text-ink hidden sm:inline">{ui.menu}</span>
+        <span class="flex w-7 flex-col gap-[7px]" aria-hidden="true">
+          <span class="block h-px w-full bg-ink transition-transform duration-700 ease-mist group-hover:translate-x-1"></span>
+          <span class="block h-px w-4/6 self-end bg-ink transition-[width] duration-700 ease-mist group-hover:w-full"></span>
+        </span>
+        <span class="sr-only sm:hidden">{ui.menu}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile: persistent Book pill, bottom-right -->
+<div class="float-pill fixed right-4 bottom-4 z-40 md:hidden" style="bottom: max(1rem, env(safe-area-inset-bottom));" data-float-pill>
+  <BookButton class="shadow-[0_8px_30px_-12px_rgba(30,40,36,0.45)]" />
+</div>
+
+<style>
+  .site-header {
+    transition: background-color 0.9s var(--ease-mist), transform 1s var(--ease-mist);
+  }
+  .site-header.is-scrolled {
+    background: color-mix(in srgb, var(--mist) 86%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .float-pill {
+    transition: opacity 0.8s var(--ease-mist), transform 0.8s var(--ease-mist);
+  }
+  .float-pill.is-away {
+    opacity: 0;
+    transform: translate3d(0, 0.75rem, 0);
+    pointer-events: none;
+  }
+  .site-header.is-hidden {
+    transform: translate3d(0, -100%, 0);
+  }
+</style>

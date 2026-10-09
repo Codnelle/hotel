@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Photo from '../components/Photo.astro';
+import { dayPage } from '../content/site';
+---
+<Base title={dayPage.meta.title} description={dayPage.meta.description}>
+  <PageIntro label={dayPage.label} headline={dayPage.headline} intro={dayPage.intro} />
+
+  {dayPage.moments.map((m, i) => (
+    <section class="section" aria-labelledby={`moment-${i}`}>
+      <div class="wrap grid items-center gap-12 md:grid-cols-12 md:gap-0">
+        <div class:list={['md:col-span-6', i % 2 ? 'md:order-2 md:col-start-7' : 'md:col-start-1']}>
+          <Photo img={m.image} class="aspect-[4/5] md:aspect-[5/6]" sizes="(min-width: 768px) 50vw, 100vw" />
+        </div>
+        <div class:list={['relative z-[3] md:col-span-4', i % 2 ? 'md:order-1 md:col-start-2' : 'md:col-start-8 md:pl-6']}>
+          <p class="label" data-reveal="fade">{m.time} · {m.hour}</p>
+          <span class="rule my-6" aria-hidden="true"></span>
+          <h2 id={`moment-${i}`} class="display-md max-w-[14ch]" data-reveal="lines"><span class="line">{m.line}</span></h2>
+          <p class="mt-6 max-w-[36ch] text-ink/85" data-reveal="fade">{m.body}</p>
+        </div>
+      </div>
+    </section>
+  ))}
+</Base>

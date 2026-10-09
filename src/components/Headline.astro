@@ -1,0 +1,15 @@
+---
+import { accent } from '../lib/text';
+
+interface Props {
+  lines: string[];
+  as?: 'h1' | 'h2' | 'h3' | 'p';
+  class?: string;
+  reveal?: boolean;
+  id?: string;
+}
+const { lines, as: Tag = 'h2', class: cls = 'display-lg', reveal = true, id } = Astro.props;
+---
+<Tag class={cls} data-reveal={reveal ? 'lines' : undefined} id={id}>
+  {lines.map((l) => <span class="line" set:html={accent(l)} />)}
+</Tag>

@@ -1,0 +1,15 @@
+---
+/** Day turns to night: mist deepens through Teesta into Pine Ink. */
+import { home } from '../../content/site';
+---
+<div class="dusk relative h-[75svh] md:h-[95svh]" role="region" aria-labelledby="dusk-line">
+  <div class="wrap relative flex h-full flex-col justify-end pb-[10svh]">
+    <p id="dusk-line" class="lede max-w-[20ch] text-paper md:ml-[33%]" data-reveal="fade">{home.dusk.line}</p>
+  </div>
+</div>
+
+<style>
+  .dusk {
+    background: linear-gradient(180deg, var(--mist) 0%, #d3dbd8 20%, #9fb2af 42%, #566b66 64%, #2b3733 82%, var(--ink) 100%);
+  }
+</style>

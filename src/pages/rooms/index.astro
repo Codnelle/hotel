@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Photo from '../../components/Photo.astro';
+import { rooms, roomsPage, ui } from '../../content/site';
+---
+<Base title={roomsPage.meta.title} description={roomsPage.meta.description}>
+  <PageIntro label={roomsPage.label} headline={roomsPage.headline} intro={roomsPage.intro} />
+
+  {rooms.map((r, i) => (
+    <section class="section" aria-labelledby={`room-${r.slug}`}>
+      <div class="wrap grid items-end gap-12 md:grid-cols-12 md:gap-0">
+        <div class:list={['md:col-span-6', i % 2 ? 'md:order-2 md:col-start-7' : 'md:col-start-2']}>
+          <Photo img={r.images[0]} class="aspect-[4/5]" sizes="(min-width: 768px) 50vw, 100vw" />
+        </div>
+        <div class:list={['md:col-span-4', i % 2 ? 'md:order-1 md:col-start-2' : 'md:col-start-8 md:pl-6']}>
+          <p class="label mb-4" data-reveal="fade">{ui.from} {r.from}</p>
+          <h2 id={`room-${r.slug}`} class="display-md" data-reveal="fade">
+            <a href={`/rooms/${r.slug}`} class="hover:italic">{r.name}</a>
+          </h2>
+          <p class="mt-5 max-w-[32ch] text-ink/85" data-reveal="fade">{r.line}</p>
+          <div class="mt-8" data-reveal="fade">
+            <a href={`/rooms/${r.slug}`} class="link text-sm">See the room<span class="sr-only">: {r.name}</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+</Base>

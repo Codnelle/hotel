@@ -1,0 +1,56 @@
+---
+import { nav, hotel, ui, whatsappHref } from '../content/site';
+import RidgeMark from './RidgeMark.astro';
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+<dialog id="menu" class="sheet menu" autofocus tabindex="-1" aria-label="Site menu" data-lenis-prevent>
+  <div class="wrap flex min-h-full flex-col">
+    <div class="flex h-[var(--header-h)] items-center justify-between">
+      <span class="flex items-center gap-3">
+        <RidgeMark class="h-auto w-9" />
+        <span class="text-[0.6875rem] font-medium tracking-[0.26em] uppercase">{hotel.name}</span>
+      </span>
+      <button type="button" class="-mr-2 flex h-11 items-center gap-3 px-2" data-close>
+        <span class="label !text-ink">{ui.close}</span>
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" stroke="currentColor" stroke-width="1"><path d="M2 2l14 14M16 2L2 16" /></svg>
+      </button>
+    </div>
+
+    <nav class="flex flex-1 items-center py-16 md:pl-[16vw]" aria-label="Main">
+      <ol class="space-y-1 md:space-y-2">
+        {nav.map((item, i) => {
+          const active = current === item.href;
+          return (
+            <li class="menu-item" style={`--i:${i}`}>
+              <a
+                href={item.href}
+                class="group flex items-baseline gap-5 py-1"
+                aria-current={active ? 'page' : undefined}
+              >
+                <span class="label w-6 tabular-nums" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <span class:list={[
+                  'font-display text-[2.4rem] leading-[1.15] font-light transition-[color,font-style] duration-500 md:text-[3.6rem]',
+                  active ? 'italic text-moss' : 'group-hover:italic',
+                ]}>{item.label}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+
+    <div class="menu-item grid gap-6 border-t border-teesta/50 py-8 text-sm sm:grid-cols-3" style="--i:7">
+      <address class="not-italic leading-relaxed">
+        {hotel.address.map((l) => <span class="block">{l}</span>)}
+      </address>
+      <p class="flex flex-col gap-1">
+        <a class="link self-start" href={whatsappHref()} target="_blank" rel="noopener">WhatsApp</a>
+        <a class="link self-start" href={hotel.instagram} target="_blank" rel="noopener">Instagram</a>
+        <a class="link self-start" href={`mailto:${hotel.email}`}>{hotel.email}</a>
+      </p>
+      <div class="sm:text-right">
+        <button type="button" class="btn btn-book" data-open-booking aria-haspopup="dialog" aria-controls="booking">{ui.stay}</button>
+      </div>
+    </div>
+  </div>
+</dialog>

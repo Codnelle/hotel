@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Photo from '../components/Photo.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { gettingHerePage as g } from '../content/site';
+---
+<Base title={g.meta.title} description={g.meta.description}>
+  <PageIntro label={g.label} headline={g.headline} intro={g.intro} />
+
+  <section class="pb-[var(--section-y)]" aria-label="The road up">
+    <div class="wrap">
+      <Photo img={g.image} class="aspect-[4/5] md:aspect-[21/9]" sizes="100vw" />
+    </div>
+  </section>
+
+  <section class="section pt-0" aria-labelledby="ways-heading">
+    <div class="wrap md:pl-[calc(var(--gutter)+8vw)]">
+      <h2 id="ways-heading" class="sr-only">Ways to arrive</h2>
+      <ul class="grid gap-16 md:grid-cols-3 md:gap-[5vw]" data-reveal="stagger">
+        {g.ways.map((w) => (
+          <li>
+            <p class="label">{w.label}</p>
+            <span class="rule my-5" aria-hidden="true"></span>
+            <h3 class="font-display text-[1.85rem] leading-tight">{w.title}</h3>
+            <p class="mt-4 max-w-[30ch] text-ink/85">{w.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section screen" aria-labelledby="ask-heading">
+    <div class="wrap w-full">
+      <div class="md:ml-[42%] md:max-w-[32rem]">
+        <h2 id="ask-heading" class="lede" data-reveal="fade">{g.note}</h2>
+        <div class="mt-10" data-reveal="fade">
+          <WhatsAppButton label="Message us the dates" />
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,74 @@
+---
+import { home, rooms, ui } from '../../content/site';
+import Headline from '../Headline.astro';
+import Photo from '../Photo.astro';
+---
+<section class="section overflow-hidden" aria-labelledby="rooms-title">
+  <div class="wrap">
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div class="md:pl-[8vw]">
+        <p class="label mb-6" data-reveal="fade">{home.rooms.label}</p>
+        <Headline lines={home.rooms.headline} id="rooms-title" />
+      </div>
+      <a href="/rooms" class="link self-start text-sm md:self-end" data-reveal="fade">All rooms</a>
+    </div>
+  </div>
+
+  <div class="drift-row no-bar mt-16 md:mt-28" data-drift-row>
+    <ul class="drift-track">
+      {rooms.map((r, i) => (
+        <li class="room-card" style={i === 1 ? '--lift:1' : undefined}>
+          <a href={`/rooms/${r.slug}`} class="group block">
+            <div class="overflow-hidden">
+              <Photo img={r.images[0]} class="aspect-[4/5] transition-transform duration-[1600ms] ease-mist group-hover:scale-[1.03]" sizes="(min-width: 768px) 28vw, 78vw" width={1200} height={1500} />
+            </div>
+            <div class="mt-6 flex items-baseline justify-between gap-4">
+              <h3 class="font-display text-[1.75rem] leading-none md:text-[2.1rem]">
+                <span class="transition-[font-style] group-hover:italic">{r.name}</span>
+              </h3>
+              <p class="label whitespace-nowrap">{ui.from} {r.from}</p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .drift-row {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    -webkit-overflow-scrolling: touch;
+  }
+  .drift-track {
+    display: flex;
+    gap: 1.25rem;
+    width: max-content;
+    padding-inline: var(--gutter);
+  }
+  .room-card {
+    width: 78vw;
+    max-width: 24rem;
+    scroll-snap-align: start;
+  }
+  @media (min-width: 48rem) {
+    .drift-track {
+      gap: 6vw;
+      padding-inline: calc(var(--gutter) + 8vw) var(--gutter);
+      align-items: flex-start;
+    }
+    .room-card {
+      width: 28vw;
+      max-width: 30rem;
+    }
+    .room-card:nth-child(2) {
+      margin-top: 9rem;
+    }
+    .drift-row:global(.is-drifting) {
+      overflow-x: clip;
+      overflow-y: visible;
+    }
+  }
+</style>

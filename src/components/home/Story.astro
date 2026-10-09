@@ -1,0 +1,208 @@
+---
+/**
+ * The story is a climb: from the Teesta at about 210 m to the house at 1,250 m.
+ * An altimeter rides alongside and counts up as you scroll. Each picture rises
+ * out of mist as it comes into view; the cloud chapter fills the screen.
+ * Nothing is pinned. The page keeps flowing.
+ */
+import { home } from '../../content/site';
+import { accent } from '../../lib/text';
+import Headline from '../Headline.astro';
+import Photo from '../Photo.astro';
+
+const { story } = home;
+const chapters = story.chapters;
+const top = Math.max(...chapters.map((c) => c.altitude));
+const base = Math.min(...chapters.map((c) => c.altitude));
+const fmt = (n: number) => n.toLocaleString('en-IN');
+
+// Desktop placement per chapter. 'full' breaks out to the edges of the screen.
+type V = 'left' | 'right' | 'full' | 'offset' | 'close';
+const variants: V[] = ['left', 'right', 'full', 'offset', 'close'];
+const place: Record<Exclude<V, 'full'>, { fig: string; head: string; copy: string; ratio: string }> = {
+  left: { fig: 'md:col-start-3 md:col-span-6 md:row-span-2', head: 'md:col-start-9 md:col-span-4 md:self-end md:pl-[3vw]', copy: 'md:col-start-9 md:col-span-3 md:pl-[3vw]', ratio: 'aspect-[4/5]' },
+  right: { fig: 'md:col-start-7 md:col-span-5 md:row-span-2 md:mt-[14vh]', head: 'md:col-start-3 md:col-span-4 md:row-start-1 md:self-end', copy: 'md:col-start-3 md:col-span-3 md:row-start-2', ratio: 'aspect-[4/5]' },
+  offset: { fig: 'md:col-start-3 md:col-span-6 md:row-span-2 md:mt-[10vh]', head: 'md:col-start-9 md:col-span-4 md:row-start-1 md:self-end md:pl-[3vw]', copy: 'md:col-start-9 md:col-span-3 md:row-start-2 md:pl-[3vw]', ratio: 'aspect-[4/5]' },
+  close: { fig: 'md:col-start-4 md:col-span-6', head: 'md:col-start-3 md:col-span-8 md:text-center', copy: 'md:col-start-4 md:col-span-6 md:text-center', ratio: 'aspect-[3/2]' },
+};
+---
+<section class="story relative pt-[var(--section-y)] pb-[var(--section-y)]" aria-labelledby="story-title" data-story>
+  <div class="wrap">
+    <div class="md:pl-[8vw]">
+      <p class="label mb-6" data-reveal="fade">{story.label}</p>
+      <Headline lines={story.headline} id="story-title" class="display-xl" />
+      <p class="mt-10 max-w-[38ch] text-ink/80" data-reveal="fade">{story.intro}</p>
+    </div>
+  </div>
+
+  <div class="relative mt-[18vh]" data-story-body>
+    <!-- the altimeter (desktop): rides beside the chapters, counts the climb -->
+    <aside class="altimeter" aria-hidden="true" data-altimeter>
+      <div class="altimeter-inner">
+        <p class="alt-readout"><span data-alt-value>{fmt(base)}</span><span class="alt-unit">m</span></p>
+        <p class="label mt-2">Altitude</p>
+        <div class="alt-scale">
+          <span class="alt-fill" data-alt-fill></span>
+          {chapters.map((c) => (
+            <span class="alt-tick" style={`bottom:${((c.altitude - base) / (top - base)) * 100}%`} data-alt-tick></span>
+          ))}
+        </div>
+      </div>
+    </aside>
+
+    <ol class="space-y-[22vh] md:space-y-[30vh]">
+      {chapters.map((c, i) => {
+        const v = variants[i % variants.length];
+        const num = String(i + 1).padStart(2, '0');
+        const label = (
+          <p class="label mb-5">
+            <span class="tabular-nums">{num}</span>
+            <span class="mx-3 inline-block h-px w-6 translate-y-[-0.25em] bg-teesta align-middle" aria-hidden="true"></span>
+            about {fmt(c.altitude)} m
+          </p>
+        );
+        if (v === 'full') {
+          return (
+            <li class="chapter relative h-[112svh]" data-chapter data-altitude={c.altitude} data-chapter-full>
+              <div class="mist-reveal absolute inset-0" data-mist>
+                <Photo img={c.image} class="h-full" sizes="100vw" width={1100} height={1375} reveal={false} />
+                <div class="absolute inset-0 bg-gradient-to-t from-[rgba(20,28,25,0.6)] via-[rgba(20,28,25,0.1)] to-transparent" aria-hidden="true"></div>
+              </div>
+              <div class="wrap relative z-[3] flex h-full flex-col justify-end pb-[12svh]">
+                <div class="text-paper md:pl-[14vw]">
+                  <div class="[&_.label]:!text-paper/80">{label}</div>
+                  <h3 class="display-xl" data-reveal="fade" set:html={accent(c.heading)} />
+                  <p class="story-copy mt-8 max-w-[30ch] text-paper/90" data-reveal="fade">{c.text}</p>
+                </div>
+              </div>
+            </li>
+          );
+        }
+        const p = place[v];
+        return (
+          <li class="chapter wrap" data-chapter data-altitude={c.altitude}>
+            <div class="grid gap-y-8 md:grid-cols-12 md:gap-y-10">
+              <div class:list={[p.head, 'md:pl-0']}>
+                {label}
+                <h3 class="display-lg" data-reveal="fade" set:html={accent(c.heading)} />
+              </div>
+              <div class:list={['mist-reveal relative', p.fig, v === 'close' ? 'md:mt-6' : '']} data-mist>
+                <Photo img={c.image} class={p.ratio} sizes="(min-width: 768px) 50vw, 100vw" width={1100} height={1375} reveal={false} />
+              </div>
+              <p class:list={['story-copy max-w-[32ch]', p.copy, v === 'close' ? 'md:mx-auto' : '']} data-reveal="fade">{c.text}</p>
+              {v === 'close' && (
+                <p class="label md:col-span-12 md:mt-6 md:text-center" data-reveal="fade">{fmt(c.altitude)} m · You’re here</p>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+</section>
+
+<style>
+  /* As you climb, the air pales: the section lightens toward the cloud */
+  .story {
+    background: linear-gradient(180deg, var(--mist) 0%, #e7ebe5 18%, #e9ece7 45%, #f3f2ee 78%, var(--mist) 100%);
+  }
+  .story-copy {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: 1.45rem;
+    line-height: 1.42;
+  }
+  @media (min-width: 48rem) {
+    .story-copy {
+      font-size: 1.65rem;
+    }
+  }
+
+  /* Pictures rise out of mist */
+  .mist-reveal {
+    overflow: hidden;
+  }
+  .mist-reveal::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, var(--mist) 0%, rgba(239, 238, 233, 0) 60%);
+    opacity: var(--mist-o, 0);
+    pointer-events: none;
+  }
+
+  /* Altimeter */
+  .altimeter {
+    display: none;
+  }
+  @media (min-width: 48rem) {
+    .altimeter {
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: var(--gutter);
+      width: 7vw;
+      z-index: 4;
+    }
+    .altimeter-inner {
+      position: sticky;
+      top: 28vh;
+    }
+  }
+  .alt-readout {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(1.6rem, 2vw, 2.1rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .alt-unit {
+    font-size: 0.5em;
+    margin-left: 0.2em;
+    font-style: italic;
+  }
+  .alt-scale {
+    position: relative;
+    margin-top: 1.75rem;
+    width: 1px;
+    height: 34vh;
+    background: color-mix(in srgb, var(--teesta) 55%, transparent);
+  }
+  .alt-fill {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 1px;
+    height: 100%;
+    background: var(--ink);
+    transform-origin: bottom;
+    transform: scaleY(0);
+  }
+  .alt-tick {
+    position: absolute;
+    left: -3px;
+    width: 7px;
+    height: 1px;
+    background: var(--teesta);
+  }
+  /* Over the full-screen cloud chapter the altimeter turns light */
+  .altimeter:global(.is-on-dark) {
+    color: var(--paper);
+  }
+  .altimeter:global(.is-on-dark) .label {
+    color: color-mix(in srgb, var(--paper) 80%, transparent);
+  }
+  .altimeter:global(.is-on-dark) .alt-fill {
+    background: var(--paper);
+  }
+  .altimeter,
+  .altimeter .label,
+  .alt-fill {
+    transition: color 0.8s var(--ease-mist), background-color 0.8s var(--ease-mist);
+  }
+  .alt-tick:global(.is-passed) {
+    background: var(--ink);
+  }
+</style>

@@ -1,0 +1,14 @@
+---
+/** Arrival: a single statement whose words light up as you read down. */
+import { home } from '../../content/site';
+const { arrival } = home;
+const words = arrival.text.split(' ');
+---
+<section class="section relative" aria-labelledby="arrival-label">
+  <div class="wrap">
+    <p id="arrival-label" class="label mb-10 md:pl-[8vw]" data-reveal="fade">{arrival.label}</p>
+    <p class="statement md:pl-[8vw]" data-scrub-words>
+      {words.map((w) => <span class="w">{w} </span>)}
+    </p>
+  </div>
+</section>

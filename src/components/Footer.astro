@@ -1,0 +1,47 @@
+---
+import { hotel, ui, footer, nav, whatsappHref } from '../content/site';
+import Headline from './Headline.astro';
+import RidgeMark from './RidgeMark.astro';
+import BookButton from './BookButton.astro';
+---
+<footer class="tone-night relative overflow-hidden">
+  <div class="wrap relative z-[3] pt-[var(--section-y)] pb-28 md:pb-12">
+    <div class="grid gap-14 md:grid-cols-12">
+      <div class="md:col-span-7">
+        <Headline lines={footer.line} as="p" class="display-md" />
+        <div class="mt-10" data-reveal="fade">
+          <BookButton label={ui.bookAgain} />
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-8 text-sm md:col-span-5 md:pt-3" data-reveal="fade">
+        <div>
+          <p class="label mb-3">Find us</p>
+          <address class="not-italic leading-relaxed">
+            {hotel.address.map((l) => <span class="block">{l}</span>)}
+          </address>
+        </div>
+        <div>
+          <p class="label mb-3">Write to us</p>
+          <ul class="space-y-1">
+            <li><a class="link" href={whatsappHref()} target="_blank" rel="noopener">WhatsApp</a></li>
+            <li><a class="link" href={hotel.instagram} target="_blank" rel="noopener">Instagram</a></li>
+            <li><a class="link" href={`mailto:${hotel.email}`}>Email</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-[var(--section-y)] flex flex-col gap-6 border-t border-teesta/30 pt-8 text-xs md:flex-row md:items-center md:justify-between">
+      <a href="/" class="flex items-center gap-3" aria-label={`${hotel.name}, home`}>
+        <RidgeMark class="h-auto w-9" />
+        <span class="tracking-[0.26em] uppercase">{hotel.name}</span>
+      </a>
+      <nav aria-label="Footer">
+        <ul class="flex flex-wrap gap-x-6 gap-y-2">
+          {nav.slice(1).map((n) => <li><a class="text-paper/80 hover:text-moss" href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </nav>
+      <p class="text-paper/70">Kalimpong · {hotel.altitude}</p>
+    </div>
+  </div>
+</footer>

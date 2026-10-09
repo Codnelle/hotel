@@ -1,0 +1,46 @@
+---
+import { hotel, ui } from '../content/site';
+import WhatsAppButton from './WhatsAppButton.astro';
+---
+<dialog id="booking" class="sheet book" autofocus tabindex="-1" aria-labelledby="booking-title" data-lenis-prevent>
+  <div class="px-6 pt-6 pb-8 md:px-8 md:pt-8">
+    <div class="flex items-start justify-between gap-6">
+      <div>
+        <p class="label">{hotel.name}</p>
+        <h2 id="booking-title" class="mt-2 font-display text-[2.4rem] leading-none font-light">Stay <em>with</em> us</h2>
+      </div>
+      <button type="button" class="-mt-1 -mr-2 flex h-11 w-11 items-center justify-center" data-close aria-label={ui.close}>
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" stroke="currentColor" stroke-width="1"><path d="M2 2l14 14M16 2L2 16" /></svg>
+      </button>
+    </div>
+    <p class="mt-3 text-[0.95rem] text-ink/80">{ui.bookIntro}</p>
+
+    <form class="mt-8 grid grid-cols-2 gap-x-6 gap-y-6" action={hotel.bookingUrl} method="get" target="_blank" data-booking-form>
+      <label class="field">
+        <span class="label">{ui.arrival}</span>
+        <input type="date" name="arrival" required data-arrival />
+      </label>
+      <label class="field">
+        <span class="label">{ui.departure}</span>
+        <input type="date" name="departure" required data-departure />
+      </label>
+      <label class="field">
+        <span class="label">{ui.adults}</span>
+        <select name="adults">
+          {[1, 2, 3, 4].map((n) => <option value={n} selected={n === 2}>{n}</option>)}
+        </select>
+      </label>
+      <label class="field">
+        <span class="label">{ui.children}</span>
+        <select name="children">
+          {[0, 1, 2, 3].map((n) => <option value={n}>{n}</option>)}
+        </select>
+      </label>
+
+      <div class="col-span-2 mt-4 grid gap-3 sm:grid-cols-2">
+        <button type="submit" class="btn btn-book w-full">{ui.checkRates}<span class="sr-only"> (opens booking site)</span></button>
+        <WhatsAppButton class="w-full" />
+      </div>
+    </form>
+  </div>
+</dialog>

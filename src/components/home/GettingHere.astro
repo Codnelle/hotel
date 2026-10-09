@@ -1,0 +1,22 @@
+---
+import { home } from '../../content/site';
+import Headline from '../Headline.astro';
+import WhatsAppButton from '../WhatsAppButton.astro';
+const g = home.gettingHere;
+---
+<section class="section screen tone-night" aria-labelledby="getting-title">
+  <div class="wrap relative z-[3] w-full">
+    <div class="md:pl-[8vw]">
+      <p class="label mb-6" data-reveal="fade">{g.label}</p>
+      <Headline lines={g.headline} id="getting-title" />
+    </div>
+    <div class="mt-14 md:mt-20 md:ml-[42%] md:max-w-[32rem]">
+      <p class="lede" data-reveal="fade">{g.text}</p>
+      <p class="mt-6 max-w-[42ch] text-paper/85" data-reveal="fade">{g.train}</p>
+      <div class="mt-10 flex flex-wrap items-center gap-6" data-reveal="fade">
+        <WhatsAppButton label="Message us the dates" />
+        <a href="/getting-here" class="link text-sm">The way up</a>
+      </div>
+    </div>
+  </div>
+</section>
